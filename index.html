@@ -213,6 +213,109 @@
             <b>Metrole</b> was heavily inspired by Worldle (by <a href="twitter.com/teuteuf">@teuteuf</a>) and Wordle (by <a href="twitter.com/powerlanguish">Josh Wardle</a>). Go check them out if you haven't already!
         </div>
 
+        <!-- Statistics -->
+        <div style="display:none" id="statistics">
+            <div class="header" id="statistics-header">
+                <div></div>
+                <div></div>
+                <div style="text-align: center;">
+                    <b>STATISTICS</b>
+                </div>
+                <div></div>
+                <div class="header-button" onclick="hideStatistics()">
+                    <img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
+                </div>
+            </div>
+            <hr>
+
+            <div id="summary">
+                <div class="summary-item" id="played">
+                    <div class="statistic" id="played-value">
+                        0
+                    </div>
+                    <div class="label">
+                        Played
+                    </div>
+                </div>
+                <div class="summary-item" id="success-percentage">
+                    <div class="statistic" id="success-value">
+                        0
+                    </div>
+                    <div class="label">
+                        Win %
+                    </div>
+                </div>
+                <div class="summary-item" id="streak">
+                    <div class="statistic" id="streak-value">
+                        0
+                    </div>
+                    <div class="label">
+                        Current streak
+                    </div>
+                </div>
+                <div class="summary-item" id="max-streak">
+                    <div class="statistic" id="max-streak-value">
+                        0
+                    </div>
+                    <div class="label">
+                        Max streak
+                    </div>
+                </div>
+            </div>
+
+            <b>Guess distribution</b>
+            <div id="distribution">
+                <div class="graph-row">
+                    <div class="graph-label">1</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-1">
+                            <div class="bar-label" id="label-1">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-row">
+                    <div class="graph-label">2</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-2">
+                            <div class="bar-label" id="label-2">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-row">
+                    <div class="graph-label">3</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-3">
+                            <div class="bar-label" id="label-3">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-row">
+                    <div class="graph-label">4</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-4">
+                            <div class="bar-label" id="label-4">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-row">
+                    <div class="graph-label">5</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-5">
+                            <div class="bar-label" id="label-5">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-row">
+                    <div class="graph-label">6</div>
+                    <div class="bar-container">
+                        <div class="bar" style="width:7%" id="bar-6">
+                            <div class="bar-label" id="label-6">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Settings -->
         <div style="display:none" id="settings">
             <div class="header" id="settings-header">
@@ -268,7 +371,9 @@
                 <div style="font-size:2rem; text-align: center;">
                     <b>Met<span style="color:green">r</span>ole</b>
                 </div>
-                <div></div>
+                <div class="header-button" onclick="showStatistics()">
+                    <img alt="📈" src="https://twemoji.maxcdn.com/2/72x72/1f4c8.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
+                </div>
                 <div class="header-button" onclick="showSettings()">
                     <img alt="⚙️" src="https://twemoji.maxcdn.com/2/72x72/2699.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
                 </div>
