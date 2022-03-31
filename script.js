@@ -4,6 +4,9 @@ var gameState
 var difficulty
 var units
 var pastDistances
+var today
+// var failIncr
+var timeoutID
 
 // define useful constants
 const kmToMiles = 1.60934
@@ -202,7 +205,7 @@ function animate(row, name, distance, bearing) {
 }
 
 // handle submission of a guess
-function submit(input = document.getElementById("guess").value) {
+function submit(input = document.getElementById("guess").value, auto=false) {
     if (input in duplicates && duplicates[input]) {
         // ambiguous input error
         Snackbar.show({pos: 'top-center', text: "Ambiguous city name. Try specifying a state.", duration: 2000, showAction: false, width: "max-content"})
@@ -238,7 +241,7 @@ function submit(input = document.getElementById("guess").value) {
                 gameState = 2
             }
             else if (gameState == 1) {
-                setTimeout(function(){
+                timeoutID = setTimeout(function(){
                     Snackbar.show({pos: 'top-center', text: successMessages[nGuesses], duration: 5000, showAction: false, width: "max-content"})
                 }, animationDelay * 6)
             }
@@ -249,12 +252,27 @@ function submit(input = document.getElementById("guess").value) {
         }
     }
 
+    // end-of-game handling
     if (gameState > 0) {
         document.getElementById("form").innerHTML = `<button onclick="share()" id="share-button">Share</button>`
         if (gameState == 2) {
             setTimeout(function() {
                 Snackbar.show({pos: 'top-center', text: target.name, duration: 5000, showAction: false, width: "max-content"})
             }, animationDelay * 6)
+            localStorage.setItem("streak", 0)
+            localStorage.setItem("maxStreak", Math.max(parseInt(localStorage.getItem("streak")) || 0, parseInt(localStorage.getItem("maxStreak")) || 0))
+            if (!auto) {
+                localStorage.setItem("failures", parseInt(localStorage.getItem("failures")) + 1 || 1)
+            }
+        }
+        else {
+            // if (localStorage.getItem("lastSuccess") != today) {
+            if (!auto) {
+                localStorage.setItem("lastSuccess", today)
+                localStorage.setItem(`successes-${nGuesses}`, parseInt(localStorage.getItem(`successes-${nGuesses}`)) + 1 || 1)
+                localStorage.setItem("streak", parseInt(localStorage.getItem("streak")) + 1 || 1)
+                localStorage.setItem("maxStreak", Math.max(parseInt(localStorage.getItem("streak")) || 0, parseInt(localStorage.getItem("maxStreak")) || 0))
+            }
         }
     }
 }
@@ -264,6 +282,7 @@ function showHelp() {
     $("#container").hide()
     $("#how-to-play").show()
     Snackbar.close()
+    clearTimeout(timeoutID)
 }
 
 function hideHelp() {
@@ -275,12 +294,53 @@ function hideHelp() {
 function showSettings() {
     $("#container").hide()
     $("#settings").show()
-    Snackbar.close()
+    Snackbar.close()    
+    clearTimeout(timeoutID)
 }
 
 function hideSettings() {
     $("#container").show()
     $("#settings").hide()
+}
+
+// show and hide statistics window
+function showStatistics() {
+    clearTimeout(timeoutID)
+
+    // compute statistics
+    let failures = parseInt(localStorage.getItem("failures")) || 0    
+    let totalSuccesses = 0
+    let mode = 0
+    for (let i = 1; i <= 6; i++) {
+        let successes = parseInt(localStorage.getItem(`successes-${i}`)) || 0    
+        totalSuccesses += successes
+        mode = Math.max(mode, successes)
+    }
+
+    let gamesPlayed = failures + totalSuccesses
+    if (gamesPlayed > 0) { // if at least one game has been completed
+        document.getElementById("played-value").innerHTML = gamesPlayed
+        document.getElementById("success-value").innerHTML = Math.round(totalSuccesses / gamesPlayed * 100)
+        document.getElementById("streak-value").innerHTML = localStorage.getItem("streak") || 0
+        document.getElementById("max-streak-value").innerHTML = localStorage.getItem("maxStreak") || 0
+
+        for (let i = 1; i <= 6; i++) {
+            let successes = parseInt(localStorage.getItem(`successes-${i}`)) || 0
+            let width = successes ? Math.round(7 + 93 * successes / mode) : 7
+            let flex = successes ? "flex-end; padding-right: 8px;" : "center"
+            document.getElementById(`label-${i}`).innerHTML = successes
+            document.getElementById(`bar-${i}`).setAttribute("style", `width:${width}%; justify-content:${flex}`)
+        }    
+    }
+
+    $("#container").hide()
+    $("#statistics").show()
+    Snackbar.close()
+}
+
+function hideStatistics() {
+    $("#container").show()
+    $("#statistics").hide()
 }
 
 // store difficulty setting
@@ -330,10 +390,11 @@ function load() {
     nGuesses = 0
     gameState = 0
     pastDistances = []
+    // failIncr = true
 
     // generate target city
-    let today = new Date().toISOString().slice(0, 10)
-    target = eligibleCities[Math.floor(new Math.seedrandom(today+".")() * eligibleCities.length)]
+    today = new Date().toISOString().slice(0, 10)
+    target = eligibleCities[Math.floor(new Math.seedrandom(today)() * eligibleCities.length)]
 
     // load settings
     let storedUnits = localStorage.getItem("units")
@@ -354,10 +415,14 @@ function load() {
 
     // load previous guesses
     let lastPlayed = localStorage.getItem("date")
+    let lastSuccess = localStorage.getItem("lastSuccess")
     if (lastPlayed == today) {
         let i = 1
         while (localStorage.getItem(`guess-${i}`)) {
-            submit(localStorage.getItem(`guess-${i}`))
+            /* if (i == 6) {
+                failIncr = false
+            } */
+            submit(localStorage.getItem(`guess-${i}`), auto=true)
             i++
         }
     }
@@ -365,6 +430,10 @@ function load() {
         localStorage.setItem("date", today)
         for (let i = 1; i <= 6; i++) {
             localStorage.removeItem(`guess-${i}`)
+        }
+        if (!lastSuccess || new Date(today) - new Date(lastSuccess) > 86400000) { // if more than a day has elapsed between the last game
+            localStorage.setItem("streak", 0)
+            localStorage.setItem("maxStreak", Math.max(parseInt(localStorage.getItem("streak")) || 0, parseInt(localStorage.getItem("maxStreak")) || 0))
         }
     }
 }
