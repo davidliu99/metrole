@@ -394,7 +394,8 @@ function load() {
 
     // generate target city
     today = new Date().toISOString().slice(0, 10)
-    target = eligibleCities[Math.floor(new Math.seedrandom(today)() * eligibleCities.length)]
+    let nDays = Math.floor((new Date().getTime() - new Date("2022-03-28").getTime()) / 3600 / 24 / 1000)
+    target = eligibleCities[sequence[nDays - 1]]
 
     // load settings
     let storedUnits = localStorage.getItem("units")
