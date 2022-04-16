@@ -4,4 +4,4 @@ This is a spinoff of Worldle by @teuteuf, which was itself inspired by the popul
 
 If you encounter a bug (which is inevitable, given that this is my first project using HTML) or have any suggestions, feel free to let me know by opening an issue on GitHub. 
 
-Play Metrole [here](davidliu99.github.io/metrole)!
+Play Metrole [here](https://davidliu99.github.io/metrole)!
