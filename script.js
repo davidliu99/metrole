@@ -5,7 +5,6 @@ var difficulty
 var units
 var pastDistances
 var today
-// var failIncr
 var timeoutID
 
 // define useful constants
@@ -255,6 +254,7 @@ function submit(input = document.getElementById("guess").value, auto=false) {
     // end-of-game handling
     if (gameState > 0) {
         document.getElementById("form").innerHTML = `<button onclick="share()" id="share-button">Share</button>`
+        // loss
         if (gameState == 2) {
             setTimeout(function() {
                 Snackbar.show({pos: 'top-center', text: target.name, duration: 5000, showAction: false, width: "max-content"})
@@ -265,14 +265,29 @@ function submit(input = document.getElementById("guess").value, auto=false) {
                 localStorage.setItem("failures", parseInt(localStorage.getItem("failures")) + 1 || 1)
             }
         }
+        // win
         else {
-            // if (localStorage.getItem("lastSuccess") != today) {
             if (!auto) {
                 localStorage.setItem("lastSuccess", today)
                 localStorage.setItem(`successes-${nGuesses}`, parseInt(localStorage.getItem(`successes-${nGuesses}`)) + 1 || 1)
                 localStorage.setItem("streak", parseInt(localStorage.getItem("streak")) + 1 || 1)
                 localStorage.setItem("maxStreak", Math.max(parseInt(localStorage.getItem("streak")) || 0, parseInt(localStorage.getItem("maxStreak")) || 0))
             }
+        }
+        // post game data to server
+        if (!auto) {
+            let now = new Date().toUTCString()
+            guesses = []
+            for (let i = 1; i <= nGuesses; i++) {
+                guesses.push(localStorage.getItem(`guess-${i}`))
+            }
+            post({
+                time: now,
+                IP: IP,
+                target: target.name,
+                success: gameState == 1,
+                guesses: guesses
+            })
         }
     }
 }
@@ -370,6 +385,40 @@ function toKilometers() {
     localStorage.setItem("units", units)
 }
 
+function standardIcons() {
+    localStorage.setItem("icons", "standard")
+    document.getElementById("close-help").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("close-statistics").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("close-settings").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("help-button").innerHTML = `<img alt="❓" src="https://twemoji.maxcdn.com/2/72x72/2753.png" style="width: 1.5rem; height: 1.5rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("statistics-button").innerHTML = `<img alt="📈" src="https://twemoji.maxcdn.com/2/72x72/1f4c8.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("settings-button").innerHTML = `<img alt="⚙️" src="https://twemoji.maxcdn.com/2/72x72/2699.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("submit-button").innerHTML = `<img alt="🏙" src="https://images.emojiterra.com/twitter/v13.1/512px/1f3d9.png" class="inline-block" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;"> Guess`
+}
+
+function minimalist() {
+    localStorage.setItem("icons", "minimalist")
+    document.getElementById("close-help").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 18 18" style="width: 1rem; height: 1rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
+        <path fill="var(--color-tone-1)" d="M 22.8 7.692 L 21.108 6 L 14.4 12.708 L 7.692 6 L 6 7.692 L 12.708 14.4 L 6 21.108 L 7.692 22.8 L 14.4 16.092 L 21.108 22.8 L 22.8 21.108 L 16.092 14.4 z"></path>
+    </svg>`
+    document.getElementById("close-statistics").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 18 18" style="width: 1rem; height: 1rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
+        <path fill="var(--color-tone-1)" d="M 22.8 7.692 L 21.108 6 L 14.4 12.708 L 7.692 6 L 6 7.692 L 12.708 14.4 L 6 21.108 L 7.692 22.8 L 14.4 16.092 L 21.108 22.8 L 22.8 21.108 L 16.092 14.4 z"></path>
+    </svg>`    
+    document.getElementById("close-settings").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="5 5 18 18" style="width: 1rem; height: 1rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">
+        <path fill="var(--color-tone-1)" d="M 22.8 7.692 L 21.108 6 L 14.4 12.708 L 7.692 6 L 6 7.692 L 12.708 14.4 L 6 21.108 L 7.692 22.8 L 14.4 16.092 L 21.108 22.8 L 22.8 21.108 L 16.092 14.4 z"></path>
+    </svg>`
+    document.getElementById("help-button").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
+    </svg>`
+    document.getElementById("statistics-button").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"></path>
+    </svg>`
+    document.getElementById("settings-button").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path>
+    </svg>`
+    document.getElementById("submit-button").innerHTML = `Guess`
+}
+
 // close autocomplete menu upon window resize 
 window.addEventListener('resize', function() {
     $("#guess").autocomplete("close")
@@ -390,7 +439,6 @@ function load() {
     nGuesses = 0
     gameState = 0
     pastDistances = []
-    // failIncr = true
 
     // generate target city
     today = new Date().toISOString().slice(0, 10)
@@ -414,15 +462,18 @@ function load() {
         difficulty = storedDifficulty
     }
 
+    let storedIconStyle = localStorage.getItem("icons")
+    if (storedIconStyle == "minimalist") {
+        document.getElementById("minimalist").checked = true
+        minimalist()
+    }
+
     // load previous guesses
     let lastPlayed = localStorage.getItem("date")
     let lastSuccess = localStorage.getItem("lastSuccess")
     if (lastPlayed == today) {
         let i = 1
         while (localStorage.getItem(`guess-${i}`)) {
-            /* if (i == 6) {
-                failIncr = false
-            } */
             submit(localStorage.getItem(`guess-${i}`), auto=true)
             i++
         }
@@ -480,4 +531,15 @@ function share() {
     else {
         Snackbar.show({pos: 'top-center', text: "Clipboard API not working.", duration: 2000, showAction: false, width: "max-content"})
     }
+}
+
+function post(data) {
+    fetch("https://dqrjrkjg7z2rdp7oszdlrf776q0qqpuj.lambda-url.us-east-2.on.aws/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        }, 
+        mode: 'no-cors',
+        body: JSON.stringify(data)
+    })
 }
