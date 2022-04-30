@@ -286,6 +286,7 @@ function submit(input = document.getElementById("guess").value, auto=false) {
                 IP: IP,
                 target: target.name,
                 success: gameState == 1,
+                difficulty: difficulty,
                 guesses: guesses
             })
         }
