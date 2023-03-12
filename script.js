@@ -463,11 +463,11 @@ function load() {
         difficulty = storedDifficulty
     }
 
-    let storedIconStyle = localStorage.getItem("icons")
-    if (storedIconStyle == "minimalist") {
-        document.getElementById("minimalist").checked = true
-        minimalist()
-    }
+    // let storedIconStyle = localStorage.getItem("icons")
+    // if (storedIconStyle == "minimalist") {
+    document.getElementById("minimalist").checked = true
+    minimalist()
+    // }
 
     // load previous guesses
     let lastPlayed = localStorage.getItem("date")
