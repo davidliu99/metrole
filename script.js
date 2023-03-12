@@ -14,7 +14,7 @@ const green = twemoji.parse("<span>\uD83D\uDFE9</span>")
 const yellow = twemoji.parse("<span>\uD83D\uDFE8</span>")
 const gray = twemoji.parse("<span>\u2B1C\uFE0F</span>")
 const animationDelay = 400
-const successImage = `<img alt="🎉" src="https://emojipedia-us.s3.amazonaws.com/source/skype/289/party-popper_1f389.png" class="inline-block" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+const successImage = `<img alt="🎉" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f389.png" class="inline-block" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
 
 // compute distance and bearing from the guess to the target 
 function feedback(guess, target) {
@@ -388,13 +388,13 @@ function toKilometers() {
 
 function standardIcons() {
     localStorage.setItem("icons", "standard")
-    document.getElementById("close-help").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("close-statistics").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("close-settings").innerHTML = `<img alt="❌" src="https://twemoji.maxcdn.com/2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("help-button").innerHTML = `<img alt="❓" src="https://twemoji.maxcdn.com/2/72x72/2753.png" style="width: 1.5rem; height: 1.5rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("statistics-button").innerHTML = `<img alt="📈" src="https://twemoji.maxcdn.com/2/72x72/1f4c8.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("settings-button").innerHTML = `<img alt="⚙️" src="https://twemoji.maxcdn.com/2/72x72/2699.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
-    document.getElementById("submit-button").innerHTML = `<img alt="🏙" src="https://images.emojiterra.com/twitter/v13.1/512px/1f3d9.png" class="inline-block" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;"> Guess`
+    document.getElementById("close-help").innerHTML = `<img alt="❌" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("close-statistics").innerHTML = `<img alt="❌" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("close-settings").innerHTML = `<img alt="❌" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/274c.png" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("help-button").innerHTML = `<img alt="❓" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2753.png" style="width: 1.5rem; height: 1.5rem; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("statistics-button").innerHTML = `<img alt="📈" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f4c8.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("settings-button").innerHTML = `<img alt="⚙️" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/2699.png" style="width: 1.5em; height: 1.5em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;">`
+    document.getElementById("submit-button").innerHTML = `<img alt="🏙" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/1f3d9.png" class="inline-block" style="width: 1em; height: 1em; margin: 0px 0.05em 0px 0.1em; vertical-align: -0.1em;"> Guess`
 }
 
 function minimalist() {
