@@ -465,7 +465,7 @@ function load() {
 
     // let storedIconStyle = localStorage.getItem("icons")
     // if (storedIconStyle == "minimalist") {
-    document.getElementById("minimalist").checked = true
+    // document.getElementById("minimalist").checked = true
     minimalist()
     // }
 
